@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Vars
+PDA_EXIT_CODE=0
+
+# Useful func
+pda_usage() { err "Missing args\n\nUsage:"; usage 2>/dev/null ||
+              echo -e "    $0 <dashed args>"; }
+err() { echo -e "$@"; PDA_EXIT_CODE=1; }
+die() { err "\n$@\n"; exit 1; }
+perr() { err "PDA: Error parsing arg: '$@'"; }
+
+[ -n "$1" ] || pda_usage
+
+# Debugging
+if [ -n "$PDA_DEBUG" ]; then
+    echo "PDA: Parsing dashed args: $@"
+    print_var() { echo "PDA: Setting $1 to '${!1}'"; }
+else
+    print_var() { :; }
+fi
+
+# Parse loop
+while  (( "$#" )); do
+    flag=0
+
+    # Var
+    var=$1; shift
+    if ! [[ "$var" =~ ^'--'* ]]; then perr "$var"; break; fi
+    var=${var#--}
+    # Val
+    if [ "$1" == "" ] || [[ "$1" =~ ^'--'* ]]; then
+        val=1; flag=1
+    else
+        val="$1"; shift
+    fi
+    read ${var} &>/dev/null <<< "$val" && print_var $var ||
+        ( [ "$flag" == 1 ] && err "--$var" || perr "--$var $val"
+          break
+        )
+done
+
+(exit $PDA_EXIT_CODE)
