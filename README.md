@@ -11,9 +11,10 @@ $ export PATH=$PATH:~/local/bin
 ```
 
 ### Basic Usage
-You can source `pda`anywhere from your bash script
+You can source `pda` library and the use `pda` api anywhere from your bash script
 ```bash
-$ source pda --flag --abc 123 --def 456
+$ source ~/local/bin/pda
+$ pda --flag --abc 123 --def 456
 $ echo $abc
 123
 $ echo $def
@@ -23,7 +24,7 @@ $ echo $def
 ### Debugging
 Set the env var `PDA_DEBUG` to see what `pda` does
 ```bash
-$ PDA_DEBUG=1 source pda --abc 123 --def 456
+$ PDA_DEBUG=1 pda --abc 123 --def 456
 PDA: Parsing dashed args: --abc 123 --def 456
 PDA: Setting abc to '123'
 PDA: Setting def to '456'
@@ -32,7 +33,7 @@ PDA: Setting def to '456'
 ### Flags
 If the value for a dashed parameter is not specified, it would be assumed as a flag and the valued would be set to 1
 ```bash
-$ PDA_DEBUG=1 source pda --flag --abc 123 --def 456
+$ PDA_DEBUG=1 pda --flag --abc 123 --def 456
 PDA: Parsing dashed args: --flag --abc 123 --def 456
 PDA: Setting flag to '1'
 PDA: Setting abc to '123'
@@ -42,21 +43,22 @@ PDA: Setting def to '456'
 ### Errors
 `pda` exits with error code 1 when something fails
 ```bash
-$ source pda --flag --abc 123 def 456 || echo "Failed"
+$ pda --flag --abc 123 def 456 || echo "Failed"
 PDA: Error parsing arg: 'def'
 Failed
 ```
 ```bash
-$ source pda --flag --abc 123 --def --456 || die "Parsing cmd line args failed"
+$ pda --flag --abc 123 --def --456 || die "Parsing cmd line args failed"
 PDA: Error parsing arg: '--456'
 
 Parsing cmd line args failed
 ```
 
 ### Usage
-On sourcing `pda` from a script invoked without any args would make it print the following standard `usage` string
+On invoking `pda` api without any args would make it print the following standard `usage` string
 ```bash
 $ source pda
+$ pda
 Missing args
 
 Usage:
@@ -66,22 +68,12 @@ Usage:
 To customize the `usage` string, define your own `usage` function
 ```bash
 $ usage() { echo -e "  my_script --abc <abc> --def <def>"; }
-$ source pda || die
+$ source pda
+$ pda|| die
 Missing args
 
 Usage:
   my_script --abc <abc> --def <def>
-```
-
-
-### Usage
-On sourcing `pda` from a script invoked without any args would make it print the following standard `usage` string
-```bash
-$ source pda
-Missing args
-
-Usage:
-    bash <dashed args>
 ```
 
 To customize the `usage` string, define your own `usage` function
