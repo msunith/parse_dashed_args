@@ -76,14 +76,23 @@ Usage:
   my_script --abc <abc> --def <def>
 ```
 
-To customize the `usage` string, define your own `usage` function
-```bash
-$ usage() { echo -e "  my_script --abc <abc> --def <def>"; }
-$ source pda || die
-Missing args
+### Tests
+There are some simple tests under the `tests` subdirectory. To run them,
+make sure you have [BATS](https://github.com/bats-core/bats-core) and its
+helper library [bats-assert](https://github.com/bats-core/bats-assert) installed
 
-Usage:
-  my_script --abc <abc> --def <def>
+```Running the tests
+$ bats test_pda.bats
+test_pda.bats
+ ✓ pda with int args
+ ✓ pda with str args
+ ✓ pda with str arg with spaces
+ ✓ pda with bool flag
+ ✓ pda error
+ ✓ pda debugs
+ ✓ pda debugs with error
+
+7 tests, 0 failures
 ```
 
 ### TODO
