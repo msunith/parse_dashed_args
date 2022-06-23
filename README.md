@@ -81,8 +81,11 @@ There are some simple tests under the `tests` subdirectory. To run them,
 make sure you have [BATS](https://github.com/bats-core/bats-core) and its
 helper library [bats-assert](https://github.com/bats-core/bats-assert) installed
 
+Make sure env var BATS_LIB_DIR points to the dir where bats helper dir is
+present
+
 ```Running the tests
-$ bats test_pda.bats
+$ BATS_LIB_DIR=~/bats bats test_pda.bats
 test_pda.bats
  ✓ pda with int args
  ✓ pda with str args

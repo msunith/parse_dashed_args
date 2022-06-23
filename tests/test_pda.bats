@@ -4,8 +4,9 @@ setup() {
   base_dir="$(dirname $(dirname $(realpath $BATS_TEST_FILENAME)))"
   source $base_dir/pda
 
-  load 'helper/bats-support/load'
-  load 'helper/bats-assert/load'
+  [ -n $BATS_LIB_DIR ] || BATS_LIB_DIR=$base_dir/tests
+  load "$BATS_LIB_DIR/helper/bats-support/load"
+  load "$BATS_LIB_DIR/helper/bats-assert/load"
 }
 
 @test "pda with int args" {
